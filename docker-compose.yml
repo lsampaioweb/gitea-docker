@@ -1,0 +1,64 @@
+version: "3.7"
+
+services:
+  gitea:
+    image: "registry.libraries.homelab/gitea/gitea:latest"
+    container_name: "gitea"
+    restart: "always"
+    volumes:
+      - "${ETC_LOCALTIME}:/etc/localtime:ro"
+      - "gitea-data:/data"
+      - "./backup:/app/backup"
+      - "../certificates:/certs"
+
+    networks:
+      net-proxy:
+      net-database-sqlserver:
+      net-ldap:
+      net-repositories:
+        aliases:
+          - "repositories.homelab"
+
+    environment:
+      # Values are [dev, prod].
+      RUN_MODE: "prod"
+      ROOT_URL: "https://repositories.homelab"
+
+      DISABLE_SSH: "true"
+      DISABLE_REGISTRATION: "true"
+      REQUIRE_SIGNIN_VIEW: "true"
+
+      # The database type in use [mysql, postgres, mssql, sqlite3].
+      DB_TYPE: "mssql"
+      DB_HOST: "mssql:1433"
+      DB_USER: "gitea"
+      DB_NAME: "gitea"
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=net-proxy"
+      - "traefik.frontend.rule=Host:repositories.homelab"
+      - "traefik.frontend.passHostHeader=true"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.backend=gitea"
+      - "traefik.port=3000"
+
+volumes:
+  gitea-data:
+    external: true
+
+networks:
+  net-repositories:
+    external: true
+  net-proxy:
+    external: true
+  net-database-sqlserver:
+    external: true
+  net-ldap:
+    external: true
