@@ -1,0 +1,14 @@
+Tipo de autenticação:         LDAP (via BindDN)
+Nome da autenticação:         ldap
+Protocolo de segurança:       Unencrypted
+Servidor:                     openldap
+Porta:                        389
+Vincular DN:                  cn=ldap-reader,dc=homelab
+Vincular senha:               ldap-reader
+Base de pesquisa do usuário:  ou=usuarios,dc=homelab
+Filtro de usuário:            (&(objectClass=posixAccount)(uid=%s)(memberOf=cn=gitea-user,ou=groups,dc=homelab))
+Filtro de administrador:      (memberOf=cn=gitea-admin,ou=groups,dc=homelab)
+Atributo nome de usuário:     uid
+Atributo primeiro nome:       cn
+Atributo sobrenome:
+Atributo e-mail:              mail
