@@ -74,10 +74,10 @@ If you want, you can create a [app.ini](config/app.ini "app.ini") file and set s
 
 1. [Backup and Restore.](https://docs.gitea.io/pt-br/backup-and-restore "Backup and Restore")
 
-## License:
+### License:
 
 [MIT](LICENSE "MIT License")
 
-## Created by: 
+### Created by:
 
 1. Luciano Sampaio.
